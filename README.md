@@ -69,4 +69,90 @@ In next steps above commands will be explained.
     May 02 08:48:52 ubuntu sshd[922]: Received SIGHUP; restarting.
     May 02 08:48:52 ubuntu sshd[922]: Server listening on 0.0.0.0 port 22.
     May 02 08:48:52 ubuntu sshd[922]: Server listening on :: port 22.
+ You can meet with vairous types of service's status:
+ - loaded: Unit configuration file has been processed
+ - active (running): Running with one or more continuing processes
+ - active (exited): Successfully completed a one-time configuration
+ - acvtive (waiting): Running but waiting for an event
+ - inactive: Not running
+ - enabled: Will be started at boot time
+ - disabled: Will not be started at boot time
+ - static: Cannot be enabled, but may be started by an enabled unit
+automatically
+
+## Step 4 - listening and some manipulate - demonstration
+  To listening all services (all type of units) in system just type **systemctl** in terminal. You will got a long list.
+  
+  To choose specific type of unit e.g service just type previous command with param *--type*: **systemctl --type=service**
+  
+    >$ systemctl --type=service
+  Example:
+  ![](https://i.imgur.com/YbTVJwW.png)
+  
+  Status argument may also be used to determine if a particular unit is active and show if the unis is enabled to start at *boot time*.
+  
+    aaa@ubuntu:~$ systemctl is-active sshd
+    active
+    aaa@ubuntu:~$ systemctl is-enabled sshd
+    enabled
+  List the active statf of all loaded units. There is option to limit type of unit. 
+  
+    >$ systemctl list-units --type=service
+  
+  By adding *-all* param it displays inactive units too.
+ 
+    >$ systemctl list-units --type=service -all
+  
+  ![](https://i.imgur.com/5CZyIJ4.png)
+  
+  View the enab;ed and disabled settings for all units. Optionally, limit the type of unit.
+  
+    >$ systemctl list -unit -files --type=service
+  Or just ony failed.
+  
+    >$ systemctl --failed --type=service
+    
+  ## Step 5 - Starting and stop ping system daemons on a running system
+  
+  - View status of service: **systemctl status sshd.service**
+  - Verify process is running: **ps -up PID**
+  - Stop the service and verify status: **systemctl stop sshd.service**
+  - Start the service and verify status (look at process ID!!): **systemctl start sshd.service**
+  - Stop and start service - restart and verify status: **systemctl restart sshd.service** 
+  - Or just reload and verify status (will ID process change?): **systemctl reload sshd.service**  
+  
+  Service which we want to stop may has dependencies:
+  
+    aaa@ubuntu:~$ systemctl stop cups.service
+    Failed to stop cups.service: Access denied
+    See system logs and 'systemctl status cups.service' for details.
+    Warning: Stopping cups.service, but it can still be activated by:
+      cups.socket
+      cups.path
+    
+  To get dependencies of specific unit just type:
+  
+    >$ systemctl list-dependencies UNIT
+    
+ ## Step 6 - Enabling system daemons to start or stop at boot
+ Starting a service on a running systerm does not guarantee that the service will be restarted when the system reboot. Stopping service will not keep it form starting again when the system reboot. So how handle with that?
+ 
+Verify status of the serivce
+
+    >$ systemctl status ssh.service
+Disable a service and check status
+
+    >$ systemctl disable ssh.service
+    >$ systemctl status sshdservice
+
+Enable the service and check status:
+
+    >$ systemctl enable ssh.service
+    >$ systemctl status sshdservice
+
+![](https://i.imgur.com/NQv1cb5.png)
+ 
+ 
+## Summary
+
 
