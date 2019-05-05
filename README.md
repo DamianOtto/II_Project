@@ -2,6 +2,10 @@
   The text was created for the needs of the II project (Inżynieria internetu).
 
   Main goal of this tutorial is to control and monitor network services and system daemons using **systemd** in Linux systems.
+  
+  Daemon is a computer program that runs as a background process, rather than being under the direct control of an interactive user. Daemons in unix systems are highlighted by addyng "d" letter and the and of name e.g: DHCPD - is a DHCP server program that operates as a daemon on a server to provide Dynamic Host Configuration Protocol (DHCP).
+  
+  A service often refers to one or more daemons.
 
 ## Step 1
   Get linux system, any distribution (preferred Ubuntu)
@@ -70,15 +74,17 @@ In next steps above commands will be explained.
     May 02 08:48:52 ubuntu sshd[922]: Server listening on 0.0.0.0 port 22.
     May 02 08:48:52 ubuntu sshd[922]: Server listening on :: port 22.
  You can meet with vairous types of service's status:
- - loaded: Unit configuration file has been processed
- - active (running): Running with one or more continuing processes
- - active (exited): Successfully completed a one-time configuration
- - acvtive (waiting): Running but waiting for an event
- - inactive: Not running
- - enabled: Will be started at boot time
- - disabled: Will not be started at boot time
- - static: Cannot be enabled, but may be started by an enabled unit
-automatically
+ 
+| State | Description |
+| ------------- | ------------- |
+| loaded | Unit configuration file has been processed.|
+| active (running)   | Running with one or more continuing processes.|
+| active (exited)   | Successfully completed a one-time configuration.|
+| active (waiting)   | Running but waiting for an event.|
+| inactive   | Not running.|
+| enabled   | Will be started at boot time.|
+| disabled   | Will not be started at boot time.|
+| static | Cannot be enabled, but may be started by an enabled unit automatically.|
 
 ## Step 4 - listening and some manipulate - demonstration
   To listening all services (all type of units) in system just type **systemctl** in terminal. You will got a long list.
@@ -114,12 +120,24 @@ automatically
     
   ## Step 5 - Starting and stop ping system daemons on a running system
   
-  - View status of service: **systemctl status sshd.service**
-  - Verify process is running: **ps -up PID**
-  - Stop the service and verify status: **systemctl stop sshd.service**
-  - Start the service and verify status (look at process ID!!): **systemctl start sshd.service**
-  - Stop and start service - restart and verify status: **systemctl restart sshd.service** 
-  - Or just reload and verify status (will ID process change?): **systemctl reload sshd.service**  
+  View status of service: 
+  
+      >$ systemctl status sshd.service
+  Verify process is running:
+  
+      >$ ps -up PID
+  Stop the service and verify status:
+  
+      >$ systemctl stop sshd.service
+  Start the service and verify status (look at process ID!!):
+  
+      >$ systemctl start sshd.service
+  Stop and start service - restart and verify status:
+  
+      >$ systemctl restart sshd.service
+  Or just reload and verify status (will ID process change?):
+  
+      >$ systemctl reload sshd.service
   
   Service which we want to stop may has dependencies:
   
@@ -134,25 +152,46 @@ automatically
   
     >$ systemctl list-dependencies UNIT
     
- ## Step 6 - Enabling system daemons to start or stop at boot
+ Masking services.
+    
+ ## Step 6 - Enabling system services/daemons to start or stop at boot
  Starting a service on a running systerm does not guarantee that the service will be restarted when the system reboot. Stopping service will not keep it form starting again when the system reboot. So how handle with that?
  
 Verify status of the serivce
 
-    >$ systemctl status ssh.service
+    >$ systemctl status ssh
 Disable a service and check status
 
-    >$ systemctl disable ssh.service
-    >$ systemctl status sshdservice
+    >$ systemctl disable ssh
+    >$ systemctl status ssh
 
 Enable the service and check status:
 
-    >$ systemctl enable ssh.service
-    >$ systemctl status sshdservice
-
+    >$ systemctl enable ssh
+    >$ systemctl status ssh
 ![](https://i.imgur.com/NQv1cb5.png)
  
  
+**IMPORTANT: The client is ssh, the daemon is sshd**
+
+Masking services
+
+At times, a system may have conflicting services installed. For example, there are multiple
+methods to manage networks and firewalls. To prevent from accidentally starting service, that service can be *masked*.
+
+![](https://i.imgur.com/MjiXKeU.png)
+ 
 ## Summary
-
-
+  This short tutorial shows how indetify installed and running serives on the system and manipulate them. 
+  
+  Summary of **systemctl** commands.
+  
+| Command | Description |
+| ------------- | ------------- |
+| **systemctl status UNIT**  | View detailed inforamtion about a unit state.  |
+| **systemctl stop UNIT**   | Stop a service on a running system.  |
+| **systemctl start UNIT**   | Start a service on a running system.  |
+| **systemctl restart UNIT**   | Restart a service on a running system.  |
+| **systemctl reload UNIT**   | Reload configuration file of a running service.  |
+| **systemctl enable UNIT**   | Enable service to start at boot time.  |
+| **systemctl disable UNIT**   | Disable service to start at boot time.  |
