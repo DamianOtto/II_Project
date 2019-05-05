@@ -152,8 +152,6 @@ In next steps above commands will be explained.
   
     >$ systemctl list-dependencies UNIT
     
- Masking services.
-    
  ## Step 6 - Enabling system services/daemons to start or stop at boot
  Starting a service on a running systerm does not guarantee that the service will be restarted when the system reboot. Stopping service will not keep it form starting again when the system reboot. So how handle with that?
  
@@ -174,7 +172,7 @@ Enable the service and check status:
  
 **IMPORTANT: The client is ssh, the daemon is sshd**
 
-Masking services
+### Masking services
 
 Installed services may have conflicting. For example, there are multiple
 methods to manage networks and firewalls. To prevent from accidentally starting service, that service can be *masked*.
