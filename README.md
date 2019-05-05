@@ -111,7 +111,7 @@ In next steps above commands will be explained.
   
   ![](https://i.imgur.com/5CZyIJ4.png)
   
-  View the enab;ed and disabled settings for all units. Optionally, limit the type of unit.
+  View the enabled and disabled settings for all units. Optionally, limit the type of unit.
   
     >$ systemctl list -unit -files --type=service
   Or just ony failed.
@@ -176,8 +176,9 @@ Enable the service and check status:
 
 Masking services
 
-At times, a system may have conflicting services installed. For example, there are multiple
+Installed services may have conflicting. For example, there are multiple
 methods to manage networks and firewalls. To prevent from accidentally starting service, that service can be *masked*.
+Mask is a stronger version of *disable*. Using *disable* all symlinks of the specified unit file are removed. If using *mask* the units will be linked to /dev/null
 
 ![](https://i.imgur.com/MjiXKeU.png)
  
